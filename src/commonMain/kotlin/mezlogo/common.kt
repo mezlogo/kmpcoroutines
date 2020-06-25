@@ -33,3 +33,10 @@ suspend fun explicitSuspend(name: String): String {
     p("explicitSuspend after call suspended function")
     return greet
 }
+
+@JsExport
+interface SomeApi {
+    fun syncCall(msg: String): String
+    suspend fun asyncCall(msg: String): String
+}
+

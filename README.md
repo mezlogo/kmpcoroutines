@@ -34,6 +34,10 @@ declare namespace coroutineskmp {
     namespace mezlogo {
         function explicitDeferred(name: string): kotlinx.coroutines.Deferred<string>
         /* ErrorDeclaration: Suspend function */
+        interface SomeApi {
+            syncCall(msg: string): string
+            /* ErrorDeclaration: Suspend function */
+        }
     }
     namespace mezlogo {
         function explicitPromise(name: string): kotlin.js.Promise<string>
