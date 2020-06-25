@@ -9,10 +9,10 @@ const explicitDeferred = common.mezlogo.explicitDeferred("Bill")
 log("after call explicitDeferred: " + explicitDeferred)
 
 setTimeout(() =>
-    log("explicitDeferred after timeout 200: " + explicitDeferred.getCompleted())
+    log("explicitDeferred after timeout 200: " + explicitDeferred.getCompleted_1())
     , 200);
 
-    const explicitPromise = common.mezlogo.explicitPromise("Bob")
+const explicitPromise = common.mezlogo.explicitPromise("Bob")
 log("after call explicitPromise: " + explicitPromise)
 explicitPromise.then(res => log("then of explicitPromise: " + res))
 

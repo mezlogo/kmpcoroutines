@@ -4,7 +4,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlin.js.JsName
+import kotlin.js.JsExport
 
 fun p(msg: String) = println("kmp: $msg")
 
@@ -16,7 +16,7 @@ suspend fun callGreetService(name: String): String {
     return "Hello, $name!"
 }
 
-@JsName("explicitDeferred")
+@JsExport
 fun explicitDeferred(name: String): Deferred<String> {
     p("before create coroutine")
     val deferred = GlobalScope.async {
@@ -26,7 +26,7 @@ fun explicitDeferred(name: String): Deferred<String> {
     return deferred
 }
 
-@JsName("explicitSuspend")
+@JsExport
 suspend fun explicitSuspend(name: String): String {
     p("call explicitSuspend is already in coroutine scope")
     val greet = callGreetService(name)

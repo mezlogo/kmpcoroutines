@@ -26,3 +26,21 @@ kmp: explicitSuspend after call suspended function
 nodejs: after await asyncWorksTooHello, Joe!
 nodejs: explicitDeferred after timeout 200: Hello, Bill!
 ```
+
+coroutineskmp.d.ts:
+```
+declare namespace coroutineskmp {
+    type Nullable<T> = T | null | undefined
+    namespace mezlogo {
+        function explicitDeferred(name: string): kotlinx.coroutines.Deferred<string>
+        /* ErrorDeclaration: Suspend function */
+    }
+    namespace mezlogo {
+        function explicitPromise(name: string): kotlin.js.Promise<string>
+    }
+}
+```
+
+upd 2020.06.25.01:
+- upgrade KMP, kotlin, coroutines from stable `1.3.72` to eap `1.4-M2`
+- use `IR` js compiler which generates `.d.ts` file for each `@JsExport` annotation

@@ -4,5 +4,5 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 
-@JsName("explicitPromise")
+@JsExport
 fun explicitPromise(name: String) = GlobalScope.promise { explicitSuspend(name) }
