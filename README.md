@@ -12,15 +12,11 @@ nodejs: promiseVersion: Jane before await
 nodejs: promiseVersion: Jane asyncResultPromise is: [object Promise]
 nodejs: awaitVersion: Bill before call
 nodejs: awaitVersion: Bill before await
-kmp: asyncCall: coroutine: before call suspend function
-kmp: suspendFunction: name: Jane before delay: 100
-kmp: asyncCall: coroutine: before call suspend function
-kmp: suspendFunction: name: Bill before delay: 100
-kmp: suspendFunction: name: Jane after delay
-kmp: asyncCall: coroutine: after call suspend function
+kmp: asyncCall: name: Jane before delay: 100
+kmp: asyncCall: name: Bill before delay: 100
+kmp: asyncCall: name: Jane after delay
 nodejs: promiseVersion: Jane after await. result: Hello, Jane!
-kmp: suspendFunction: name: Bill after delay
-kmp: asyncCall: coroutine: after call suspend function
+kmp: asyncCall: name: Bill after delay
 nodejs: awaitVersion: Bill after await. result: Hello, Bill!
 ```
 
@@ -29,11 +25,7 @@ coroutineskmp.d.ts:
 declare namespace coroutineskmp {
     type Nullable<T> = T | null | undefined
     namespace mezlogo {
-        interface JsAdoptedSomeApi {
-            syncCall(name: string): string
-            asyncCall(name: string): kotlin.js.Promise<string>
-        }
-        class JsAdoptedSomeApiImpl implements mezlogo.JsAdoptedSomeApi {
+        class JsAdoptedApi implements mezlogo.CommonSyncApi {
             constructor()
             syncCall(name: string): string
             asyncCall(name: string): kotlin.js.Promise<string>
@@ -42,7 +34,10 @@ declare namespace coroutineskmp {
 }
 ```
 
-upd 2020.06.29.01:
+upd 2020.06.29.03:
+- decompose api interface by sync and async functions and delegate js specific api
+
+upd 2020.06.29.02:
 - make platform specific js impl
 
 upd 2020.06.29.01:

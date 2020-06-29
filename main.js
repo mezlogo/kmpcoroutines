@@ -2,13 +2,13 @@ const common = require("./build/js/packages/coroutineskmp/kotlin/coroutineskmp.j
 
 function log(msg) { console.log("nodejs: " + msg) }
 
-const someApi = new common.mezlogo.JsAdoptedSomeApiImpl()
+const someApi = new common.mezlogo.JsAdoptedApi()
 
-log(`sync call: ${someApi.syncCall_2("Bob")}`)
+log(`sync call: ${someApi.syncCall_0("Bob")}`)
 
 async function awaitVersion(name) {
     log(`awaitVersion: ${name} before call`);
-    const asyncResultWrapper = someApi.asyncCall_2(name);
+    const asyncResultWrapper = someApi.asyncCall_0(name);
     log(`awaitVersion: ${name} before await`);
     const asyncResult = await asyncResultWrapper;
     log(`awaitVersion: ${name} after await. result: ${asyncResult}`);
@@ -16,7 +16,7 @@ async function awaitVersion(name) {
 
 function promiseVersion(name) {
     log(`promiseVersion: ${name} before call`);
-    const asyncResultWrapper = someApi.asyncCall_2(name);
+    const asyncResultWrapper = someApi.asyncCall_0(name);
     log(`promiseVersion: ${name} before await`);
     const asyncResultPromise = asyncResultWrapper;
     log(`promiseVersion: ${name} asyncResultPromise is: ${asyncResultPromise}`);
