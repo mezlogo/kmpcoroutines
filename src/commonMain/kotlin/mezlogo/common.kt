@@ -1,10 +1,12 @@
 package mezlogo
 
 import kotlinx.coroutines.delay
+import kotlin.js.JsName
 
 fun p(msg: String) = println("kmp: $msg")
 
 interface CommonSyncApi {
+    @JsName("syncCall")
     fun syncCall(name: String): String
 }
 

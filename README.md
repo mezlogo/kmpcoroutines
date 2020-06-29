@@ -34,6 +34,9 @@ declare namespace coroutineskmp {
 }
 ```
 
+upd 2020.06.29.04:
+- add `@JsName` for force rewrite public/exported JS method names
+
 upd 2020.06.29.03:
 - decompose api interface by sync and async functions and delegate js specific api
 
