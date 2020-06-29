@@ -1,18 +1,19 @@
 package mezlogo
 
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import kotlin.js.Promise
 
-actual fun <T> suspendToAsyncResult(deferred: Deferred<T>): AsyncResultWrapper {
-    p("kmp/js: suspendToAsyncResult: before create promise")
-    val promise = GlobalScope.promise {
-        p("kmp/js: suspendToAsyncResult: promise: before await")
-        val result = deferred.await()
-        p("kmp/js: suspendToAsyncResult: promise: after await")
-        result
-    }
-    p("kmp/js: suspendToAsyncResult: after create promise")
-    val asyncResultWrapper = AsyncResultWrapper(promise)
-    return asyncResultWrapper
+@JsExport
+interface JsAdoptedSomeApi {
+    fun syncCall(name: String): String
+    fun asyncCall(name: String): Promise<String>
+}
+
+@JsExport
+class JsAdoptedSomeApiImpl: JsAdoptedSomeApi {
+    private val real: SomeApi = SomeApiImpl()
+    override fun syncCall(name: String) = real.syncCall(name)
+
+    override fun asyncCall(name: String) = GlobalScope.promise { real.asyncCall(name).await() }
 }

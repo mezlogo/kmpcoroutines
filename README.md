@@ -8,31 +8,23 @@ Output sample:
 I> node main.js
 nodejs: sync call: Hello, Bob!
 nodejs: promiseVersion: Jane before call
-kmp: asyncCall: before create coroutine
-kmp: asyncCall: after create coroutine
-kmp: kmp/js: suspendToAsyncResult: before create promise
-kmp: kmp/js: suspendToAsyncResult: after create promise
 nodejs: promiseVersion: Jane before await
 nodejs: promiseVersion: Jane asyncResultPromise is: [object Promise]
 nodejs: awaitVersion: Bill before call
+nodejs: awaitVersion: Bill before await
 kmp: asyncCall: before create coroutine
 kmp: asyncCall: after create coroutine
-kmp: kmp/js: suspendToAsyncResult: before create promise
-kmp: kmp/js: suspendToAsyncResult: after create promise
-nodejs: awaitVersion: Bill before await
+kmp: asyncCall: before create coroutine
+kmp: asyncCall: after create coroutine
 kmp: asyncCall: coroutine: before call suspend function
 kmp: suspendFunction: name: Jane before delay: 100
-kmp: kmp/js: suspendToAsyncResult: promise: before await
 kmp: asyncCall: coroutine: before call suspend function
 kmp: suspendFunction: name: Bill before delay: 100
-kmp: kmp/js: suspendToAsyncResult: promise: before await
 kmp: suspendFunction: name: Jane after delay
 kmp: asyncCall: coroutine: after call suspend function
-kmp: kmp/js: suspendToAsyncResult: promise: after await
 nodejs: promiseVersion: Jane after await. result: Hello, Jane!
 kmp: suspendFunction: name: Bill after delay
 kmp: asyncCall: coroutine: after call suspend function
-kmp: kmp/js: suspendToAsyncResult: promise: after await
 nodejs: awaitVersion: Bill after await. result: Hello, Bill!
 ```
 
@@ -41,27 +33,21 @@ coroutineskmp.d.ts:
 declare namespace coroutineskmp {
     type Nullable<T> = T | null | undefined
     namespace mezlogo {
-        class AsyncResultWrapper {
-            constructor(future: any)
-            readonly future: any;
-            component1(): any
-            copy(future: any): mezlogo.AsyncResultWrapper
-            toString(): string
-            hashCode(): number
-            equals(other: Nullable<any>): boolean
-        }
-        interface SomeApi {
+        interface JsAdoptedSomeApi {
             syncCall(name: string): string
-            asyncCall(name: string): mezlogo.AsyncResultWrapper
+            asyncCall(name: string): kotlin.js.Promise<string>
         }
-        class SomeApiImpl implements mezlogo.SomeApi {
+        class JsAdoptedSomeApiImpl implements mezlogo.JsAdoptedSomeApi {
             constructor()
             syncCall(name: string): string
-            asyncCall(name: string): mezlogo.AsyncResultWrapper
+            asyncCall(name: string): kotlin.js.Promise<string>
         }
     }
 }
 ```
+
+upd 2020.06.29.01:
+- make platform specific js impl
 
 upd 2020.06.29.01:
 - make generic-less wrapper for result of async call
