@@ -12,10 +12,6 @@ nodejs: promiseVersion: Jane before await
 nodejs: promiseVersion: Jane asyncResultPromise is: [object Promise]
 nodejs: awaitVersion: Bill before call
 nodejs: awaitVersion: Bill before await
-kmp: asyncCall: before create coroutine
-kmp: asyncCall: after create coroutine
-kmp: asyncCall: before create coroutine
-kmp: asyncCall: after create coroutine
 kmp: asyncCall: coroutine: before call suspend function
 kmp: suspendFunction: name: Jane before delay: 100
 kmp: asyncCall: coroutine: before call suspend function

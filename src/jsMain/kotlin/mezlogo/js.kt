@@ -15,5 +15,5 @@ class JsAdoptedSomeApiImpl: JsAdoptedSomeApi {
     private val real: SomeApi = SomeApiImpl()
     override fun syncCall(name: String) = real.syncCall(name)
 
-    override fun asyncCall(name: String) = GlobalScope.promise { real.asyncCall(name).await() }
+    override fun asyncCall(name: String) = GlobalScope.promise { real.asyncCall(name) }
 }
