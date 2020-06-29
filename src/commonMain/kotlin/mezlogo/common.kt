@@ -8,13 +8,15 @@ import kotlin.js.JsExport
 
 fun p(msg: String) = println("kmp: $msg")
 
-expect class AsyncResult<out T>
-expect fun <T> suspendToAsyncResult(deferred: Deferred<T>): AsyncResult<T>
+expect fun <T> suspendToAsyncResult(deferred: Deferred<T>): AsyncResultWrapper
+
+@JsExport
+data class AsyncResultWrapper(val future: Any)
 
 @JsExport
 interface SomeApi {
     fun syncCall(name: String): String
-    fun asyncCall(name: String): AsyncResult<String>
+    fun asyncCall(name: String): AsyncResultWrapper
 }
 
 @JsExport
@@ -29,7 +31,7 @@ class SomeApiImpl: SomeApi {
 
     override fun syncCall(name: String) = "Hello, $name!"
 
-    override fun asyncCall(name: String): AsyncResult<String> {
+    override fun asyncCall(name: String): AsyncResultWrapper {
         p("asyncCall: before create coroutine")
         val deferred = GlobalScope.async {
             p("asyncCall: coroutine: before call suspend function")

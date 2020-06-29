@@ -7,23 +7,33 @@ Output sample:
 ```
 I> node main.js
 nodejs: sync call: Hello, Bob!
+nodejs: promiseVersion: Jane before call
 kmp: asyncCall: before create coroutine
 kmp: asyncCall: after create coroutine
-/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:8114
-    Promise.call(this, executor);
-            ^
-
-TypeError: undefined is not a promise
-    at AsyncResult.Promise (<anonymous>)
-    at new AsyncResult (/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:8114:13)
-    at asAsyncResult (/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:8106:19)
-    at asyncResult (/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:8098:12)
-    at asyncResult$default (/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:8103:12)
-    at suspendToAsyncResult (/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:8111:12)
-    at SomeApiImpl.asyncCall_0 (/tmp/kmpcoroutines/build/js/packages/coroutineskmp/kotlin/coroutineskmp.js:7977:12)
-    at Object.<anonymous> (/tmp/kmpcoroutines/main.js:9:29)
-    at Module._compile (internal/modules/cjs/loader.js:1200:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1220:10)
+kmp: kmp/js: suspendToAsyncResult: before create promise
+kmp: kmp/js: suspendToAsyncResult: after create promise
+nodejs: promiseVersion: Jane before await
+nodejs: promiseVersion: Jane asyncResultPromise is: [object Promise]
+nodejs: awaitVersion: Bill before call
+kmp: asyncCall: before create coroutine
+kmp: asyncCall: after create coroutine
+kmp: kmp/js: suspendToAsyncResult: before create promise
+kmp: kmp/js: suspendToAsyncResult: after create promise
+nodejs: awaitVersion: Bill before await
+kmp: asyncCall: coroutine: before call suspend function
+kmp: suspendFunction: name: Jane before delay: 100
+kmp: kmp/js: suspendToAsyncResult: promise: before await
+kmp: asyncCall: coroutine: before call suspend function
+kmp: suspendFunction: name: Bill before delay: 100
+kmp: kmp/js: suspendToAsyncResult: promise: before await
+kmp: suspendFunction: name: Jane after delay
+kmp: asyncCall: coroutine: after call suspend function
+kmp: kmp/js: suspendToAsyncResult: promise: after await
+nodejs: promiseVersion: Jane after await. result: Hello, Jane!
+kmp: suspendFunction: name: Bill after delay
+kmp: asyncCall: coroutine: after call suspend function
+kmp: kmp/js: suspendToAsyncResult: promise: after await
+nodejs: awaitVersion: Bill after await. result: Hello, Bill!
 ```
 
 coroutineskmp.d.ts:
@@ -31,23 +41,30 @@ coroutineskmp.d.ts:
 declare namespace coroutineskmp {
     type Nullable<T> = T | null | undefined
     namespace mezlogo {
+        class AsyncResultWrapper {
+            constructor(future: any)
+            readonly future: any;
+            component1(): any
+            copy(future: any): mezlogo.AsyncResultWrapper
+            toString(): string
+            hashCode(): number
+            equals(other: Nullable<any>): boolean
+        }
         interface SomeApi {
             syncCall(name: string): string
-            asyncCall(name: string): mezlogo.AsyncResult<string>
+            asyncCall(name: string): mezlogo.AsyncResultWrapper
         }
         class SomeApiImpl implements mezlogo.SomeApi {
             constructor()
             syncCall(name: string): string
-            asyncCall(name: string): mezlogo.AsyncResult<string>
-        }
-    }
-    namespace mezlogo {
-        class AsyncResult<T> extends kotlin.js.Promise<T> {
-            constructor(executor: (p0: (p0: T) => void, p1: (p0: Error) => void) => void)
+            asyncCall(name: string): mezlogo.AsyncResultWrapper
         }
     }
 }
 ```
+
+upd 2020.06.29.01:
+- make generic-less wrapper for result of async call
 
 upd 2020.06.26.01:
 - declare `expect` for platform specific future-like types
